@@ -15,7 +15,6 @@ body{
     background-color: #123373;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 
@@ -26,4 +25,30 @@ body{
     top: 0;
     right: 0;
     z-index: -1;
+}
+
+.text{
+    float: left;
+    margin: 5px;
+}
+
+#thumbnail {
+    border-radius: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    margin-bottom: 5px;
+}
+
+.drawing {
+    border-radius: 10px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgba(255, 219, 85, 1);
+}
+
+.drawing :hover {
+    cursor: pointer;
 }
