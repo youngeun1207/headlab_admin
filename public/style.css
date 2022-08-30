@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+}
+@font-face {
+    font-family: 'Comfortaa', sans-serif;
+    src: url("http://fonts.cdnfonts.com/css/comfortaa");
+    font-weight: normal;
+    font-style: normal;
+}
+html{
+    font-family: 'NanumSquareRound',sans-serif;
+}
+body{
+    background-color: #123373;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.heatmap {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: -1;
+}
