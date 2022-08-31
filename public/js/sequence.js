@@ -1,19 +1,21 @@
-function createSequence() {
-    const GREEN = 65280; //#00FF00
-    const CYAN = 65535; //#00FFFF
-    const RED = 65536; //#0F0000
-    const BLUE = 1; // #000001
-    const YELLOW = 16776960; // #FFFF00
+const GREEN = 65280; //#00FF00
+const CYAN = 65535; //#00FFFF
+const RED = 65536; //#0F0000
+const BLUE = 1; // #000001
+const YELLOW = 16776960; // #FFFF00
 
+export function createSequence() {
     const canvas = document.createElement('canvas');
     canvas.id = 'sequence';
     canvas.className = 'sequence';
 
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const screenshot = document.createElement('screenshot');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, screenshot.width, screenshot.height);
+
+    canvas.width = screenshot.innerWidth;
+    canvas.height = screenshot.innerHeight;
     canvas.style.position = 'fixed';
     canvas.style.zIndex = 3;
 
@@ -30,12 +32,12 @@ function createSequence() {
         colorCode = changeToColorCode(color);
         if (!flag) {
             color -= RED;
-            if(color <= GREEN){
+            if (color <= GREEN) {
                 flag = true;
             }
-        } else{
+        } else {
             color += BLUE;
-            if(color >= CYAN){
+            if (color >= CYAN) {
                 flag = false;
                 color = YELLOW;
             }
@@ -46,7 +48,7 @@ function createSequence() {
     document.body.appendChild(canvas);
 }
 
-function checkStartPoint(ctx){
+function checkStartPoint(ctx) {
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = 'red';
@@ -104,9 +106,9 @@ function drawLineWithArrows(ctx, x0, y0, x1, y1, aWidth, aLength, color) {
     ctx.moveTo(0, 0);
     ctx.lineTo(length, 0);
 
-    ctx.moveTo(length-aLength,-aWidth);
-    ctx.lineTo(length,0);
-    ctx.lineTo(length-aLength,aWidth);
+    ctx.moveTo(length - aLength, -aWidth);
+    ctx.lineTo(length, 0);
+    ctx.lineTo(length - aLength, aWidth);
 
     ctx.stroke();
     ctx.setTransform(1, 0, 0, 1, 0, 0);

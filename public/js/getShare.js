@@ -9,14 +9,9 @@ function getOffsets(id){
     return(offset = {l:left, r:right, t:top, b:bottom});
 }
 
-function getGazeShare(targetId){
-    var offset = getOffsets(targetId);
+function getGazeShare(offset, gazeData){
     var cnt = 0;
-    var i = 0;
-    if(targetId == 'fit-picture'){
-        i = referenceTimestamp;
-    }
-    for(; i < gazeData.length; i++){
+    for(var i = 0; i < gazeData.length; i++){
         if(i < 0){
             break;
         }
@@ -29,12 +24,20 @@ function getGazeShare(targetId){
     return cnt / gazeData.length * 100;
 }
 
-function showShareData(){
+export function showShareData(data){
+    const canvas = getGazeShare(data.offsets.canvas).toPrecision(2);
+    const controler = getGazeShare(data.offsets.controler).toPrecision(2);
+    if(data.reference_index == -1){
+        const reference = 0
+    }else{
+        const reference = getGazeShare(data.offsets.reference).toPrecision(2);
+    }
+    
     swal.fire({
             title: "시선 점유율",
-            text: "캔버스: " + String(getGazeShare('jsCanvas')) + "\n" +
-                  "컨트롤: " + String(getGazeShare('controls')) + "\n" +
-                  "참고 이미지: " + String(getGazeShare('fit-picture')) + "\n"
+            text: `캔버스: ${canvas} + "\n" +
+                  "컨트롤: ${controler} + "\n" +
+                  "참고 이미지: ${reference} + "\n`
         }).then(isConfirm => {}
     );
 }

@@ -32,10 +32,11 @@ body{
     margin: 5px;
 }
 
-#thumbnail {
+.thumbnail {
     border-radius: 10px;
-    max-width: 200px;
-    max-height: 200px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
     margin-bottom: 5px;
 }
 

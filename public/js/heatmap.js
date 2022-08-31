@@ -1,4 +1,4 @@
-function createHeatmap() {
+export function createHeatmap() {
     var heatmapContainer = document.getElementById("heatmap");
     heatmapContainer.style.zIndex = 2;
     var heatmapInstance = h337.create({
