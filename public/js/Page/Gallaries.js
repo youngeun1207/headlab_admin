@@ -13,9 +13,12 @@ export default async function getGallaries(drawing_data) {
             template(src, key, id.division, id.class, id.id));
         }
     );
-    gallaryDocument.addEventListener('click',function(e){
+    gallaryDocument.addEventListener('click',async function(e){
         if(e.target && e.target.id != 'gallary'){
-            openNewPage(drawing_data[e.target.id]);
+            var link = "./detail.html";
+            var data = drawing_data[e.target.id];
+            var src = await readStorage(data.screenshot);
+            await openNewPage(link, data, src);
          }
     });
 }

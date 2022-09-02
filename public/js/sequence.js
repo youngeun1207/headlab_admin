@@ -4,39 +4,41 @@ const RED = 65536; //#0F0000
 const BLUE = 1; // #000001
 const YELLOW = 16776960; // #FFFF00
 
-export function createSequence() {
+export function createSequence(div, gaze_data) {
     const canvas = document.createElement('canvas');
     canvas.id = 'sequence';
     canvas.className = 'sequence';
 
-    const screenshot = document.createElement('screenshot');
+    const gazeData = gaze_data.gaze_data;
 
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, screenshot.width, screenshot.height);
+    ctx.clearRect(0, 0, div.style.width, div.style.height);
+    console.log(div.style.width);
 
-    canvas.width = screenshot.innerWidth;
-    canvas.height = screenshot.innerHeight;
+    canvas.width = div.offsetWidth ;
+    canvas.height = div.offsetHeight;
+
     canvas.style.position = 'fixed';
     canvas.style.zIndex = 3;
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
     ctx.fillRect(0, 0, innerWidth, innerHeight);
 
-    checkStartPoint(ctx);
+    checkStartPoint(gazeData, ctx);
 
     var sampling = 32;
     var color = YELLOW;
     var flag = false;
 
     for (var i = sampling; i < gazeData.length; i += sampling) {
-        colorCode = changeToColorCode(color);
+        const colorCode = changeToColorCode(color);
         if (!flag) {
-            color -= RED;
+            color -= RED*2;
             if (color <= GREEN) {
                 flag = true;
             }
         } else {
-            color += BLUE;
+            color += BLUE*2;
             if (color >= CYAN) {
                 flag = false;
                 color = YELLOW;
@@ -45,10 +47,24 @@ export function createSequence() {
         drawLineWithArrows(ctx, editXCoordinate(gazeData[i - sampling].x), editYCoordinate(gazeData[i - sampling].y),
             editXCoordinate(gazeData[i].x), editYCoordinate(gazeData[i].y), 5, 8, colorCode);
     }
-    document.body.appendChild(canvas);
+    const container = document.getElementById("container")
+    container.appendChild(canvas);
+
+    canvas.style.visibility='hidden';
 }
 
-function checkStartPoint(ctx) {
+export function deleteSequence(){
+    const seq = document.getElementById("sequence");
+    seq.style.visibility='hidden';
+}
+
+export function showSequence(){
+    const seq = document.getElementById("sequence");
+    seq.style.visibility='visible';
+}
+
+
+function checkStartPoint(gazeData, ctx) {
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = 'red';
@@ -82,7 +98,7 @@ function changeToColorCode(color) {
     while (color.length < 6) {
         color = addPadding(color);
     }
-    colorCode = "#" + color;
+    const colorCode = "#" + color;
     return colorCode;
 }
 
@@ -97,7 +113,7 @@ function drawLineWithArrows(ctx, x0, y0, x1, y1, aWidth, aLength, color) {
     var angle = Math.atan2(dy, dx);
     var length = Math.sqrt(dx * dx + dy * dy);
 
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
     ctx.translate(x0, y0);

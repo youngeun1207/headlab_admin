@@ -17,16 +17,6 @@ body{
     flex-direction: column;
 }
 
-
-.heatmap {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    right: 0;
-    z-index: -1;
-}
-
 .text{
     float: left;
     margin: 5px;

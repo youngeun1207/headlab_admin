@@ -3,8 +3,6 @@ import 'https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js';
 
 import { readDatabase, readStorage } from "./firebase.js";
 import getGallaries from './Page/Gallaries.js';
-import { showShareData } from "./getShare.js";
-import { showDetails } from "./showGazeData.js";
 
 const data = await readDatabase();
 
