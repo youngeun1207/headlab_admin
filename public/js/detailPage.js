@@ -4,6 +4,7 @@ import 'https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js';
 import { readDatabase, readStorage } from "./firebase.js";
 import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
 import { createSequence, deleteSequence, showSequence } from "./sequence.js";
+import { createShareData, showShare, deleteShare } from "./getShare.js";
 
 var isSequence = false;
 var isHeatmap  = false;
@@ -23,6 +24,7 @@ $(document).ready(function () {
 
     createSequence(bg, gaze_data);
     createHeatmap(bg, gaze_data);
+    createShareData(gaze_data);
 
     const seq = document.getElementById("seq");
     const heat = document.getElementById("heat");
@@ -32,7 +34,7 @@ $(document).ready(function () {
         seq.addEventListener("click", handleSequence);
     }
     if (share) {
-        share.addEventListener("click", ()=> console.log("yet"));
+        share.addEventListener("click", handleShare);
     }
     if (heat) {
         heat.addEventListener("click", handleHeatmap);
@@ -41,13 +43,16 @@ $(document).ready(function () {
 })
 
 function handleHeatmap(){
-    if(isHeatmap){
-        deleteHeatmap();
-        isHeatmap  = false;
-    }
     if(isSequence){
         deleteSequence();
         isSequence  = false;
+    }
+    if(isShare){
+        deleteShare();
+        isShare  = false;
+    }
+    if(isHeatmap){
+        return;
     }
     showHeatmap();
     isHeatmap  = true;
@@ -58,10 +63,29 @@ function handleSequence(){
         deleteHeatmap();
         isHeatmap  = false;
     }
+    if(isShare){
+        deleteShare();
+        isShare  = false;
+    }
+    if(isSequence){
+        return;
+    }
+    showSequence();
+    isSequence  = true;
+}
+
+function handleShare(){
+    if(isHeatmap){
+        deleteHeatmap();
+        isHeatmap  = false;
+    }
     if(isSequence){
         deleteSequence();
         isSequence  = false;
     }
-    showSequence();
-    isSequence  = true;
+    if(isShare){
+        return;
+    }
+    showShare();
+    isShare  = true;
 }
