@@ -13,7 +13,6 @@ export function createSequence(div, gaze_data) {
 
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, div.style.width, div.style.height);
-    console.log(div.style.width);
 
     canvas.width = div.offsetWidth ;
     canvas.height = div.offsetHeight;

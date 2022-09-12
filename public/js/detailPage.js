@@ -5,6 +5,7 @@ import { readDatabase, readStorage } from "./firebase.js";
 import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
 import { createSequence, deleteSequence, showSequence } from "./sequence.js";
 import { createShareData, showShare, deleteShare } from "./getShare.js";
+import { createProcess } from "./process.js";
 
 var isSequence = false;
 var isHeatmap  = false;
@@ -25,6 +26,7 @@ $(document).ready(function () {
     createSequence(bg, gaze_data);
     createHeatmap(bg, gaze_data);
     createShareData(gaze_data);
+    createProcess(gaze_data);
 
     const seq = document.getElementById("seq");
     const heat = document.getElementById("heat");

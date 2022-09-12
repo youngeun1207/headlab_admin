@@ -10,7 +10,7 @@ export default function createHeatmap(div, gaze_data) {
     });
     const gazeData = gaze_data.gaze_data;
     var data = {
-        max: gazeData.length / 64,
+        max: gazeData.length / 256,
         value: 1,
         data: gazeData
     };

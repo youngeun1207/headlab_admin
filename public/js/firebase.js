@@ -27,3 +27,8 @@ export async function readDatabase() {
 export async function readStorage(path) {
     return await storageRef.child(path).getDownloadURL();
 }
+
+export async function deleteData(path) {
+    const data = await dbRef.child("data").child(path);
+    data.remove();
+}

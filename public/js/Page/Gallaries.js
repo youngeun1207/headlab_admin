@@ -1,13 +1,19 @@
 import { readStorage } from "../firebase.js";
 import { openNewPage } from "./showDetails.js";
 
+export const min = {
+    min1: "_1",
+    min3: "_3",
+    min5: "_end"
+}
+
 export default async function getGallaries(drawing_data) {
     const data = Object.entries(drawing_data);
     const gallaryDocument = document.querySelector("#gallary");
     data.map(async (d) => {
         const value = d[1];
         const key = d[0];
-        const src = await readStorage(value .drawing);
+        const src = await readStorage(value .drawing + min.min5);
         const id = value .id;
         gallaryDocument.insertAdjacentHTML("beforeend", 
             template(src, key, id.division, id.class, id.id));
