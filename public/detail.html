@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.0/heatmap.js" integrity="sha512-XZFexJzmhuGGou+I1Qp82iKps7LHXkQ6QQ7ueOyMpX24l7WlBVv4I1ECLFv/xozVf0cPIn70ZnXCt5V37uZUWg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -21,11 +19,19 @@
         <div>
             <button id="share">점유율</button>
             <button id="heat">열지도</button>
+            <button id="proc">과정</button>
             <button id="seq">순서도</button>
         </div>
     </div>
     <div class="container" id="container">
         <div class="heatmap" id="heatmap"></div>
+        <div class="proc-container" id="proc-container">
+            <div class="select_min">
+                <button id="proc1_btn">1분</button>
+                <button id="proc3_btn">3분</button>
+                <button id="proc5_btn">5분</button>
+            </div>
+        </div>
         <div class='background' id='screenshot'></div>
     </div>
     

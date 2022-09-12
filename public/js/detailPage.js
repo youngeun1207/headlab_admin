@@ -5,11 +5,12 @@ import { readDatabase, readStorage } from "./firebase.js";
 import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
 import { createSequence, deleteSequence, showSequence } from "./sequence.js";
 import { createShareData, showShare, deleteShare } from "./getShare.js";
-import { createProcess } from "./process.js";
+import { createProcess, deleteProcess, showProcess } from "./process.js";
 
 var isSequence = false;
 var isHeatmap  = false;
 var isShare  = false;
+var isProc  = false;
 
 $(document).ready(function () {
     const bg = document.getElementById("screenshot");
@@ -31,6 +32,7 @@ $(document).ready(function () {
     const seq = document.getElementById("seq");
     const heat = document.getElementById("heat");
     const share = document.getElementById("share");
+    const proc = document.getElementById("proc");
 
     if (seq) {
         seq.addEventListener("click", handleSequence);
@@ -41,9 +43,29 @@ $(document).ready(function () {
     if (heat) {
         heat.addEventListener("click", handleHeatmap);
     }
-    
+    if (proc) {
+        proc.addEventListener("click", handleProcess);
+    }
 })
-
+function handleProcess(){
+    if(isSequence){
+        deleteSequence();
+        isSequence  = false;
+    }
+    if(isShare){
+        deleteShare();
+        isShare  = false;
+    }
+    if(isHeatmap){
+        deleteHeatmap();
+        isHeatmap  = false;
+    }
+    if(isProc){
+        return;
+    }
+    showProcess();
+    isProc  = true;
+}
 function handleHeatmap(){
     if(isSequence){
         deleteSequence();
@@ -52,6 +74,10 @@ function handleHeatmap(){
     if(isShare){
         deleteShare();
         isShare  = false;
+    }
+    if(isProc){
+        deleteProcess();
+        isProc = false;
     }
     if(isHeatmap){
         return;
@@ -72,6 +98,10 @@ function handleSequence(){
     if(isSequence){
         return;
     }
+    if(isProc){
+        deleteProcess();
+        isProc = false;
+    }
     showSequence();
     isSequence  = true;
 }
@@ -87,6 +117,10 @@ function handleShare(){
     }
     if(isShare){
         return;
+    }
+    if(isProc){
+        deleteProcess();
+        isProc = false;
     }
     showShare();
     isShare  = true;
