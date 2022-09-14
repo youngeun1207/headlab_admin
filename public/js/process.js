@@ -14,6 +14,9 @@ export async function createProcess(gaze_data) {
 
     const min1 = timestamp.min1;
     const min3 = timestamp.min3;
+    const min5 = timestamp.min5;
+    const min7 = timestamp.min7;
+
     const offset = gaze_data.offsets.canvas;
     const canvasOffset = {
         l: offset.l,
@@ -23,7 +26,7 @@ export async function createProcess(gaze_data) {
     }
     const width = canvasOffset.r - canvasOffset.l;
     const height = canvasOffset.b - canvasOffset.t;
-    if(min1 > 0){
+    if(min1){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(0, min1), width, height);
         src = await readStorage(gaze_data.drawing + min.min1);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc1" , width, height));
@@ -37,7 +40,7 @@ export async function createProcess(gaze_data) {
         const btn = document.getElementById("proc1_btn");
         btn.remove();
     }
-    if(min3 > 0){
+    if(min3){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min1, min3), width, height);
         src = await readStorage(gaze_data.drawing + min.min3);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc3", width, height));
@@ -51,14 +54,44 @@ export async function createProcess(gaze_data) {
         const btn = document.getElementById("proc3_btn");
         btn.remove();
     }
-    rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(Math.max(0, min1, min3)), width, height);
-    src = await readStorage(gaze_data.drawing + min.min5);
-    container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height)); 
+    if(min5){
+        rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min3, min5), width, height);
+        src = await readStorage(gaze_data.drawing + min.min7);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height));
 
-    const btn = document.getElementById("proc5_btn");
+        const btn = document.getElementById("proc5_btn");
+        btn.addEventListener("click", ()=>{
+            hideAllProcess();
+            showSelectedProcess("proc5")
+        });
+    }else{
+        const btn = document.getElementById("proc5_btn");
+        btn.remove();
+    }
+    if(min7){
+        rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min5, min7), width, height);
+        src = await readStorage(gaze_data.drawing + min.min7);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height));
+
+        const btn = document.getElementById("proc7_btn");
+        btn.addEventListener("click", ()=>{
+            hideAllProcess();
+            showSelectedProcess("proc7")
+        });
+    }else{
+        const btn = document.getElementById("proc7_btn");
+        btn.remove();
+    }
+    
+    rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(Math.max(0, min1, min3, min5, min7)), width, height);
+    src = await readStorage(gaze_data.drawing + min.end);
+    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_end", width, height)); 
+
+    const btn = document.getElementById("proc_end_btn");
+
     btn.addEventListener("click", ()=>{
         hideAllProcess();
-        showSelectedProcess("proc5")
+        showSelectedProcess("proc_end")
     });
 
     container.style.visibility = "hidden";
@@ -69,6 +102,8 @@ async function hideAllProcess(){
     const proc1 = document.getElementById("proc1");
     const proc3 = document.getElementById("proc3");
     const proc5 = document.getElementById("proc5");
+    const proc7 = document.getElementById("proc7");
+    const proc_end = document.getElementById("proc_end");
 
     if(proc1){
         proc1.style.visibility = "hidden";
@@ -78,6 +113,12 @@ async function hideAllProcess(){
     }
     if(proc5){
         proc5.style.visibility = "hidden";
+    }
+    if(proc7){
+        proc7.style.visibility = "hidden";
+    }
+    if(proc_end){
+        proc_end.style.visibility = "hidden";
     }
 }
 
