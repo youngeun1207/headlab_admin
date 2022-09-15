@@ -4,6 +4,8 @@ const RED = 65536; //#0F0000
 const BLUE = 1; // #000001
 const YELLOW = 16776960; // #FFFF00
 
+const SAMPLING = 32;
+
 export function createSequence(div, gaze_data) {
     const canvas = document.createElement('canvas');
     canvas.id = 'sequence';
@@ -25,11 +27,10 @@ export function createSequence(div, gaze_data) {
 
     checkStartPoint(gazeData, ctx);
 
-    var sampling = 32;
     var color = YELLOW;
     var flag = false;
 
-    for (var i = sampling; i < gazeData.length; i += sampling) {
+    for (var i = SAMPLING; i < gazeData.length; i += SAMPLING) {
         const colorCode = changeToColorCode(color);
         if (!flag) {
             color -= RED*2;
@@ -43,7 +44,7 @@ export function createSequence(div, gaze_data) {
                 color = YELLOW;
             }
         }
-        drawLineWithArrows(ctx, editXCoordinate(gazeData[i - sampling].x), editYCoordinate(gazeData[i - sampling].y),
+        drawLineWithArrows(ctx, editXCoordinate(gazeData[i - SAMPLING].x), editYCoordinate(gazeData[i - SAMPLING].y),
             editXCoordinate(gazeData[i].x), editYCoordinate(gazeData[i].y), 5, 8, colorCode);
     }
     const container = document.getElementById("container")

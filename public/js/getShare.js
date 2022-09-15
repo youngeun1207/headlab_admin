@@ -19,7 +19,7 @@ export async function createShareData(data){
     const canvas = await getGazeShare(data.offsets.canvas, gazeData);
     const controler = await getGazeShare(data.offsets.controler, gazeData);
     var reference = 0;
-    if(data.reference_index > -1){
+    if(data.is_reference){
         reference = await getGazeShare(data.offsets.reference, gazeData);
     }
 
