@@ -56,7 +56,7 @@ export async function createProcess(gaze_data) {
     }
     if(min5){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min3, min5), width, height);
-        src = await readStorage(gaze_data.drawing + min.min7);
+        src = await readStorage(gaze_data.drawing + min.min5);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height));
 
         const btn = document.getElementById("proc5_btn");
@@ -71,7 +71,7 @@ export async function createProcess(gaze_data) {
     if(min7){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min5, min7), width, height);
         src = await readStorage(gaze_data.drawing + min.min7);
-        container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height));
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc7", width, height));
 
         const btn = document.getElementById("proc7_btn");
         btn.addEventListener("click", ()=>{
