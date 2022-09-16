@@ -11,11 +11,19 @@ export async function createProcess(gaze_data) {
 
     var rank;
     var src;
+    var min1, min3, min5, min7;
 
-    const min1 = timestamp.min1;
-    const min3 = timestamp.min3;
-    const min5 = timestamp.min5;
-    const min7 = timestamp.min7;
+    if(timestamp){
+        min1 = timestamp.min1;
+        min3 = timestamp.min3;
+        min5 = timestamp.min5;
+        min7 = timestamp.min7;
+    } else {
+        min1 = null;
+        min3 = null;
+        min5 = null;
+        min7 = null;
+    }
 
     const offset = gaze_data.offsets.canvas;
     const canvasOffset = {
