@@ -2,6 +2,9 @@ import { readStorage } from "./firebase.js";
 import { getGazeShare } from "./getShare.js";
 import { min } from "./Page/Gallaries.js";
 
+const WHITE = "255, 255, 255, 0"
+const RED = "255, 0, 0, 0.5"
+
 export async function createProcess(gaze_data) {
     const timestamp = gaze_data.process_index;
     const container = document.getElementById("proc-container");
@@ -9,8 +12,8 @@ export async function createProcess(gaze_data) {
     container.style.height = gaze_data.window_size.y + "px";
     container.style.width = gaze_data.window_size.x + "px";
 
-    var rank;
-    var src;
+    var rank, colors, src;
+
     var min1, min3, min5, min7;
 
     if(timestamp){
@@ -37,7 +40,8 @@ export async function createProcess(gaze_data) {
     if(min1){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(0, min1), width, height);
         src = await readStorage(gaze_data.drawing + min.min1);
-        container.insertAdjacentHTML("beforeend", template(src, rank, "proc1" , width, height));
+        colors = await getMaxVal(rank);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc1" , width, height, colors));
 
         const btn = document.getElementById("proc1_btn");
         btn.addEventListener("click", ()=>{
@@ -52,7 +56,8 @@ export async function createProcess(gaze_data) {
     if(min3){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min1, min3), width, height);
         src = await readStorage(gaze_data.drawing + min.min3);
-        container.insertAdjacentHTML("beforeend", template(src, rank, "proc3", width, height));
+        colors = await getMaxVal(rank);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc3", width, height, colors));
 
         const btn = document.getElementById("proc3_btn");
         btn.addEventListener("click", ()=>{
@@ -67,7 +72,8 @@ export async function createProcess(gaze_data) {
     if(min5){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min3, min5), width, height);
         src = await readStorage(gaze_data.drawing + min.min5);
-        container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height));
+        colors = await getMaxVal(rank);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height, colors));
 
         const btn = document.getElementById("proc5_btn");
         btn.addEventListener("click", ()=>{
@@ -82,7 +88,8 @@ export async function createProcess(gaze_data) {
     if(min7){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min5, min7), width, height);
         src = await readStorage(gaze_data.drawing + min.min7);
-        container.insertAdjacentHTML("beforeend", template(src, rank, "proc7", width, height));
+        colors = await getMaxVal(rank);
+        container.insertAdjacentHTML("beforeend", template(src, rank, "proc7", width, height, colors));
 
         const btn = document.getElementById("proc7_btn");
         btn.addEventListener("click", ()=>{
@@ -94,10 +101,10 @@ export async function createProcess(gaze_data) {
         const btn = document.getElementById("proc7_btn");
         btn.remove();
     }
-    console.log( Math.max(0, min1, min3, min5, min7));
     rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(Math.max(0, min1, min3, min5, min7)), width, height);
     src = await readStorage(gaze_data.drawing + min.end);
-    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_end", width, height)); 
+    colors = await getMaxVal(rank);
+    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_end", width, height, colors)); 
 
     const end_btn = document.getElementById("proc_end_btn");
 
@@ -107,7 +114,8 @@ export async function createProcess(gaze_data) {
     });
 
     rank = await getGridShare(canvasOffset, gaze_data.gaze_data, width, height);
-    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_all", width, height)); 
+    colors = await getMaxVal(rank);
+    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_all", width, height, colors)); 
 
     const all_btn = document.getElementById("proc_all_btn");
 
@@ -118,6 +126,17 @@ export async function createProcess(gaze_data) {
 
     container.style.visibility = "hidden";
     container.style.zIndex = 1;
+}
+
+async function getMaxVal(rank){
+    var colors = [WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE]
+    const max_val = Math.max(...rank);
+    console.log(rank);
+    console.log(max_val);
+    const max_index = rank.indexOf(max_val);
+
+    colors[max_index] = RED;
+    return colors;
 }
 
 async function hideAllProcess(){
@@ -198,19 +217,19 @@ export function showProcess(){
     showSelectedProcess("proc5");
 }
 
-const template = (src, sec, id, width, height) =>`
+const template = (src, sec, id, width, height, colors) =>`
     <div class="div9-container" id=${id} style="width:${width}px; height:${height}px">
         <image class="drawing-proc" src=${src} style="width:${width}px; height:${height}px">
         <section style="width:${width}px; height:${height}px">
-            <div>${sec[0]}%</div>
-            <div>${sec[1]}%</div>
-            <div>${sec[2]}%</div>
-            <div>${sec[3]}%</div>
-            <div>${sec[4]}%</div>
-            <div>${sec[5]}%</div>
-            <div>${sec[6]}%</div>
-            <div>${sec[7]}%</div>
-            <div>${sec[8]}%</div>
+            <div style="background-color:rgba(${colors[0]})">${sec[0]}%</div>
+            <div style="background-color:rgba(${colors[1]})">${sec[1]}%</div>
+            <div style="background-color:rgba(${colors[2]})">${sec[2]}%</div>
+            <div style="background-color:rgba(${colors[3]})">${sec[3]}%</div>
+            <div style="background-color:rgba(${colors[4]})">${sec[4]}%</div>
+            <div style="background-color:rgba(${colors[5]})">${sec[5]}%</div>
+            <div style="background-color:rgba(${colors[6]})">${sec[6]}%</div>
+            <div style="background-color:rgba(${colors[7]})">${sec[7]}%</div>
+            <div style="background-color:rgba(${colors[8]})">${sec[8]}%</div>
         </section>
     </div>
 `; 
