@@ -6,6 +6,7 @@ import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
 import { createSequence, deleteSequence, showSequence } from "./sequence.js";
 import { createShareData, showShare, deleteShare } from "./getShare.js";
 import { createProcess, deleteProcess, showProcess } from "./process.js";
+import { className, division } from "./Page/Gallaries.js";
 
 var isSequence = false;
 var isHeatmap  = false;
@@ -23,7 +24,8 @@ $(document).ready(function () {
         bg.style.backgroundImage = "url('" + src + "')";
 
     }
-
+    const student_info = document.getElementById("student-info");
+    student_info.innerText = `${division[gaze_data.id.division]} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
     createSequence(bg, gaze_data);
     createHeatmap(bg, gaze_data);
     createShareData(gaze_data);

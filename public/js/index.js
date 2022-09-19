@@ -1,12 +1,17 @@
 import "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
 import 'https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js';
 
-import { deleteData, readDatabase, readStorage } from "./firebase.js";
-import getGallaries from './Page/Gallaries.js';
+import { readDatabase } from "./firebase.js";
+import getGallaries, { sortFunction } from './Page/Gallaries.js';
 
 const data = await readDatabase();
 
-const key_list = Object.keys(data);
-key_list.map(key => readStorage(data[key].drawing + "_end"));
+// const key_list = Object.keys(data);
+// key_list.map(key => readStorage(data[key].drawing + "_end"));
 
-await getGallaries(data);
+var entries = Object.entries(data);
+entries.sort(sortFunction);
+
+const final_data = Object.fromEntries(entries);
+
+await getGallaries(final_data);

@@ -102,6 +102,10 @@ button{
     transform: translate(-50%, -50%);
 }
 
+.student-info {
+    margin-left: auto;
+}
+
 section > div {
     position: absolute;
     width: calc(100% / 3);
