@@ -129,7 +129,7 @@ export async function createProcess(gaze_data) {
 }
 
 async function getMaxVal(rank){
-    var colors = [WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE]
+    var colors = [WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE];
     const max_val = Math.max(...rank);
     console.log(rank);
     console.log(max_val);
