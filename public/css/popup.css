@@ -104,6 +104,11 @@ button{
 
 .student-info {
     margin-left: auto;
+    background-color: rgba(255, 219, 85, 1);
+    padding: 7px 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 section > div {
