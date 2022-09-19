@@ -35,6 +35,7 @@ $(document).ready(function () {
     const heat = document.getElementById("heat");
     const share = document.getElementById("share");
     const proc = document.getElementById("proc");
+    const close = document.getElementById("close");
 
     if (seq) {
         seq.addEventListener("click", handleSequence);
@@ -48,7 +49,30 @@ $(document).ready(function () {
     if (proc) {
         proc.addEventListener("click", handleProcess);
     }
+    if (close) {
+        close.addEventListener("click", handleClose);
+    }
 })
+
+function handleClose(){
+    if(isSequence){
+        deleteSequence();
+        isSequence  = false;
+    }
+    if(isShare){
+        deleteShare();
+        isShare  = false;
+    }
+    if(isHeatmap){
+        deleteHeatmap();
+        isHeatmap  = false;
+    }
+    if(isProc){
+        deleteProcess();
+        isProc  = false;
+    }
+}
+
 function handleProcess(){
     if(isSequence){
         deleteSequence();

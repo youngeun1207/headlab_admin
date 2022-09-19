@@ -45,6 +45,7 @@ export async function createProcess(gaze_data) {
             showSelectedProcess("proc1")
         });
     }else{
+        min1 = null;
         const btn = document.getElementById("proc1_btn");
         btn.remove();
     }
@@ -59,6 +60,7 @@ export async function createProcess(gaze_data) {
             showSelectedProcess("proc3")
         });
     }else{
+        min3 = null;
         const btn = document.getElementById("proc3_btn");
         btn.remove();
     }
@@ -73,6 +75,7 @@ export async function createProcess(gaze_data) {
             showSelectedProcess("proc5")
         });
     }else{
+        min5 = null;
         const btn = document.getElementById("proc5_btn");
         btn.remove();
     }
@@ -87,19 +90,30 @@ export async function createProcess(gaze_data) {
             showSelectedProcess("proc7")
         });
     }else{
+        min7 = null;
         const btn = document.getElementById("proc7_btn");
         btn.remove();
     }
-    
+    console.log( Math.max(0, min1, min3, min5, min7));
     rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(Math.max(0, min1, min3, min5, min7)), width, height);
     src = await readStorage(gaze_data.drawing + min.end);
     container.insertAdjacentHTML("beforeend", template(src, rank, "proc_end", width, height)); 
 
-    const btn = document.getElementById("proc_end_btn");
+    const end_btn = document.getElementById("proc_end_btn");
 
-    btn.addEventListener("click", ()=>{
+    end_btn.addEventListener("click", ()=>{
         hideAllProcess();
         showSelectedProcess("proc_end")
+    });
+
+    rank = await getGridShare(canvasOffset, gaze_data.gaze_data, width, height);
+    container.insertAdjacentHTML("beforeend", template(src, rank, "proc_all", width, height)); 
+
+    const all_btn = document.getElementById("proc_all_btn");
+
+    all_btn.addEventListener("click", ()=>{
+        hideAllProcess();
+        showSelectedProcess("proc_all")
     });
 
     container.style.visibility = "hidden";
@@ -112,6 +126,7 @@ async function hideAllProcess(){
     const proc5 = document.getElementById("proc5");
     const proc7 = document.getElementById("proc7");
     const proc_end = document.getElementById("proc_end");
+    const proc_all = document.getElementById("proc_all");
 
     if(proc1){
         proc1.style.visibility = "hidden";
@@ -127,6 +142,9 @@ async function hideAllProcess(){
     }
     if(proc_end){
         proc_end.style.visibility = "hidden";
+    }
+    if(proc_all){
+        proc_all.style.visibility = "hidden";
     }
 }
 
