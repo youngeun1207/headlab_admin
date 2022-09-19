@@ -59,7 +59,7 @@ export default async function getGallaries(drawing_data) {
 
 export function sortFunction(a, b) {
     // 이름순으로 정렬
-    if (a[1].id.id === b[1].id.id) {
+    if (a[1].id.division === b[1].id.division) {
         return 0;
     } else {
         return (a[1].id.id < b[1].id.id) ? -1 : 1;

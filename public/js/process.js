@@ -2,7 +2,7 @@ import { readStorage } from "./firebase.js";
 import { getGazeShare } from "./getShare.js";
 import { min } from "./Page/Gallaries.js";
 
-const WHITE = "255, 255, 255, 0"
+const WHITE = "255, 255, 255, 0.5"
 const RED = "255, 0, 0, 0.5"
 
 export async function createProcess(gaze_data) {
@@ -131,8 +131,7 @@ export async function createProcess(gaze_data) {
 async function getMaxVal(rank){
     var colors = [WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE];
     const max_val = Math.max(...rank);
-    console.log(rank);
-    console.log(max_val);
+
     const max_index = rank.indexOf(max_val);
 
     colors[max_index] = RED;
@@ -187,14 +186,13 @@ async function getGridShare(canvasOffset, gaze_data, width, height) {
     };
 
     const canvasShare = await getGazeShare(canvasOffset, gaze_data);
-
+    
     for (var i = 0; i < 3; i++) {
         targetOffset.l = canvasOffset.l + gridWidth * i;
-        targetOffset.r += canvasOffset.l + gridWidth * (i+1);
+        targetOffset.r = canvasOffset.l + gridWidth * (i+1);
         for (var j = 0; j < 3; j++) {
             targetOffset.t = canvasOffset.t + gridHeight * j;
             targetOffset.b = canvasOffset.t + gridHeight * (j+1);
-
             var fullShare = await getGazeShare(targetOffset, gaze_data)/canvasShare*100;
             var tmp = Math.round(fullShare*100);
             var result = tmp / 100;
