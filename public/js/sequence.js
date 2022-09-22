@@ -1,10 +1,5 @@
-const GREEN = 65280; //#00FF00
-const CYAN = 65535; //#00FFFF
-const RED = 65536; //#0F0000
-const BLUE = 1; // #000001
-const YELLOW = 16776960; // #FFFF00
-
 const SAMPLING = 32;
+const GRADIENT = 4;
 
 export function createSequence(div, gaze_data) {
     const canvas = document.createElement('canvas');
@@ -22,30 +17,52 @@ export function createSequence(div, gaze_data) {
     canvas.style.position = 'fixed';
     canvas.style.zIndex = 3;
 
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillRect(0, 0, innerWidth, innerHeight);
 
     checkStartPoint(gazeData, ctx);
 
-    var color = YELLOW;
-    var flag = false;
+    // 초기컬러: cyan
+    var color = {
+        red: 0,
+        green: 255,
+        blue: 255
+    };
+    var green_end = false;
+    var red_end = false;
+    var blue_end = false;
 
     for (var i = SAMPLING; i < gazeData.length; i += SAMPLING) {
         const colorCode = changeToColorCode(color);
-        if (!flag) {
-            color -= RED*2;
-            if (color <= GREEN) {
-                flag = true;
+        // cyan -> blue -> magenta -> red -> yellow
+        if (!green_end) {
+            color.green -= GRADIENT;
+            if (color.green <= 0) {
+                color.green = 0;
+                green_end = true;
             }
-        } else {
-            color += BLUE*2;
-            if (color >= CYAN) {
-                flag = false;
-                color = YELLOW;
+        } else if(!red_end && green_end) {
+            color.red += GRADIENT;
+            if (color.red >= 255) {
+                color.red = 255;
+                red_end = true;
+            }
+        } else if (!blue_end && red_end){
+            color.blue -= GRADIENT;
+            if (color.blue <= 0) {
+                color.blue = 0;
+                blue_end = true;
+            }
+        }
+        else if (green_end && red_end && blue_end) {
+            color.green += GRADIENT;
+            if (color.green >= 255) {
+                color.green = 255;
+                green_end = false;
             }
         }
         drawLineWithArrows(ctx, editXCoordinate(gazeData[i - SAMPLING].x), editYCoordinate(gazeData[i - SAMPLING].y),
-            editXCoordinate(gazeData[i].x), editYCoordinate(gazeData[i].y), 5, 8, colorCode);
+            editXCoordinate(gazeData[i].x), editYCoordinate(gazeData[i].y), 7, 15, colorCode);
     }
     const container = document.getElementById("container")
     container.appendChild(canvas);
@@ -94,18 +111,13 @@ function editYCoordinate(y) {
 }
 
 function changeToColorCode(color) {
-    color = color.toString(16);
-    while (color.length < 6) {
-        color = addPadding(color);
-    }
-    const colorCode = "#" + color;
+    const red = color.red.toString();
+    const green = color.green.toString();
+    const blue = color.blue.toString();
+    const colorCode = `rgba(${red}, ${green}, ${blue}, 0.5)`;
     return colorCode;
 }
 
-function addPadding(colorCode) {
-    colorCode = "0" + colorCode;
-    return colorCode;
-}
 
 function drawLineWithArrows(ctx, x0, y0, x1, y1, aWidth, aLength, color) {
     var dx = x1 - x0;
@@ -113,7 +125,7 @@ function drawLineWithArrows(ctx, x0, y0, x1, y1, aWidth, aLength, color) {
     var angle = Math.atan2(dy, dx);
     var length = Math.sqrt(dx * dx + dy * dy);
 
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.strokeStyle = color;
 
     ctx.translate(x0, y0);

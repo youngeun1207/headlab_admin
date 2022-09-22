@@ -1,4 +1,4 @@
-import { readStorage } from "../firebase.js";
+import { readDatabase, readPersonalData, readStorage } from "../firebase.js";
 import { openNewPage } from "./showDetails.js";
 
 export const min = {
@@ -29,8 +29,8 @@ export const division = {
     test: '테스트'
 }
 
-export default async function getGallaries(drawing_data) {
-    const full_data = Object.entries(drawing_data);
+export default async function getGallaries(key_data){
+    const full_data = Object.entries(key_data);
     const gallaryDocument = document.querySelector("#gallary");
     full_data.map(async (d) => {
         const value = d[1];
@@ -42,7 +42,6 @@ export default async function getGallaries(drawing_data) {
         // const src = await readStorage(value .drawing + min.end);
         const id = value .id;
         gallaryDocument.insertAdjacentHTML("beforeend", 
-            // template(src, key, id.division, id.class, id.id));
             template(key, division[id.division], className[id.class], id.id, isRef));
         }
     );
@@ -50,7 +49,7 @@ export default async function getGallaries(drawing_data) {
         if(e.target && e.target.id != 'gallary'){
             var link = "./detail.html";
             // var data = drawing_data[e.target.id];
-            var data = drawing_data[e.target.id];
+            var data = await readPersonalData(e.target.id);
             var src = await readStorage(data.screenshot);
             await openNewPage(link, data, src);
          }
@@ -58,13 +57,7 @@ export default async function getGallaries(drawing_data) {
 }
 
 export function sortFunction(a, b) {
-    // 이름순으로 정렬
-    // if (a[1].id.division === b[1].id.division) {
-    //     return 0;
-    // } else {
-    //     return (a[1].id.division < b[1].id.division) ? -1 : 1;
-    // }
-
+    // 소속 -> 이름 순 정렬
     if (a[1].id.division < b[1].id.division) return -1;
     if (a[1].id.division > b[1].id.division) return 1;
     if (a[1].id.id < b[1].id.id) return -1;

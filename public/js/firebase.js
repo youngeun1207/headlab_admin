@@ -18,8 +18,14 @@ const dbRef = db.ref();
 const storage = firebase.app().storage("gs://iboda-eyetracking.appspot.com");
 const storageRef = storage.ref();
 
-export async function readDatabase() {
-    const data = await dbRef.child("data").get();
+export async function readDatabase(dir) {
+    const data = await dbRef.child(dir).get();
+    if (!data.val()) console.error("err");
+    return data.val();
+}
+
+export async function readPersonalData(key) {
+    const data = await dbRef.child("data").child(key).get();
     if (!data.val()) console.error("err");
     return data.val();
 }
