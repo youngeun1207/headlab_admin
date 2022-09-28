@@ -1,12 +1,12 @@
 export async function getGazeShare(offset, gazeData){
-    var cnt = 0;
+    let cnt = 0;
 
-    for(var i = 0; i < gazeData.length; i++){
+    for(let i = 0; i < gazeData.length; i++){
         if(i < 0){
             break;
         }
-        var x = gazeData[i].x;
-        var y = gazeData[i].y;
+        const x = gazeData[i].x;
+        const y = gazeData[i].y;
         if(x > offset.l  && x < offset.r && y > offset.t && y < offset.b){
             cnt++;
         }
@@ -18,7 +18,7 @@ export async function createShareData(data){
     const gazeData = data.gaze_data;
     const canvas = await getGazeShare(data.offsets.canvas, gazeData);
     const controler = await getGazeShare(data.offsets.controler, gazeData);
-    var reference = 0;
+    let reference = 0;
     if(data.is_reference){
         reference = await getGazeShare(data.offsets.reference, gazeData);
     }

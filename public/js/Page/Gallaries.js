@@ -35,7 +35,7 @@ export default async function getGallaries(key_data){
     full_data.map(async (d) => {
         const value = d[1];
         const key = d[0];
-        var isRef = 'X';
+        let isRef = 'X';
         if(value.is_reference){
             isRef = 'O'
         }
@@ -47,10 +47,10 @@ export default async function getGallaries(key_data){
     );
     gallaryDocument.addEventListener('click',async function(e){
         if(e.target && e.target.id != 'gallary'){
-            var link = "./detail.html";
+            const link = "./detail.html";
             // var data = drawing_data[e.target.id];
-            var data = await readPersonalData(e.target.id);
-            var src = await readStorage(data.screenshot);
+            const data = await readPersonalData(e.target.id);
+            const src = await readStorage(data.screenshot);
             await openNewPage(link, data, src);
          }
     });

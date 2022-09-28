@@ -1,17 +1,15 @@
 const SAMPLING = 32;
 const GRADIENT = 4;
 
-export function createSequence(div, gaze_data) {
+async function createCanvas(div){
     const canvas = document.createElement('canvas');
     canvas.id = 'sequence';
     canvas.className = 'sequence';
 
-    const gazeData = gaze_data.gaze_data;
-
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, div.style.width, div.style.height);
 
-    canvas.width = div.offsetWidth ;
+    canvas.width = div.offsetWidth;
     canvas.height = div.offsetHeight;
 
     canvas.style.position = 'fixed';
@@ -20,19 +18,35 @@ export function createSequence(div, gaze_data) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillRect(0, 0, innerWidth, innerHeight);
 
+    const container = document.getElementById("container")
+    container.appendChild(canvas);
+}
+
+export async function sequence(div){
+    await createCanvas(div);
+    const canvas = document.getElementById('sequence');
+    canvas.style.visibility = 'hidden';
+}
+
+export function createSequence(gazeData) {
+    const canvas = document.getElementById('sequence');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ctx.fillRect(0, 0, innerWidth, innerHeight);
+
     checkStartPoint(gazeData, ctx);
 
     // 초기컬러: cyan
-    var color = {
+    let color = {
         red: 0,
         green: 255,
         blue: 255
     };
-    var green_end = false;
-    var red_end = false;
-    var blue_end = false;
+    let green_end = false;
+    let red_end = false;
+    let blue_end = false;
 
-    for (var i = SAMPLING; i < gazeData.length; i += SAMPLING) {
+    for (let i = SAMPLING; i < gazeData.length; i += SAMPLING) {
         const colorCode = changeToColorCode(color);
         // cyan -> blue -> magenta -> red -> yellow
         if (!green_end) {
@@ -41,13 +55,13 @@ export function createSequence(div, gaze_data) {
                 color.green = 0;
                 green_end = true;
             }
-        } else if(!red_end && green_end) {
+        } else if (!red_end && green_end) {
             color.red += GRADIENT;
             if (color.red >= 255) {
                 color.red = 255;
                 red_end = true;
             }
-        } else if (!blue_end && red_end){
+        } else if (!blue_end && red_end) {
             color.blue -= GRADIENT;
             if (color.blue <= 0) {
                 color.blue = 0;
@@ -61,23 +75,19 @@ export function createSequence(div, gaze_data) {
                 green_end = false;
             }
         }
-        drawLineWithArrows(ctx, editXCoordinate(gazeData[i - SAMPLING].x), editYCoordinate(gazeData[i - SAMPLING].y),
-            editXCoordinate(gazeData[i].x), editYCoordinate(gazeData[i].y), 7, 15, colorCode);
+        drawLineWithArrows(ctx,gazeData[i - SAMPLING].x, gazeData[i - SAMPLING].y,
+            gazeData[i].x, gazeData[i].y, 7, 15, colorCode);
     }
-    const container = document.getElementById("container")
-    container.appendChild(canvas);
-
-    canvas.style.visibility='hidden';
 }
 
-export function deleteSequence(){
+export function deleteSequence() {
     const seq = document.getElementById("sequence");
-    seq.style.visibility='hidden';
+    seq.style.visibility = 'hidden';
 }
 
-export function showSequence(){
+export function showSequence() {
     const seq = document.getElementById("sequence");
-    seq.style.visibility='visible';
+    seq.style.visibility = 'visible';
 }
 
 
@@ -90,12 +100,21 @@ function checkStartPoint(gazeData, ctx) {
     ctx.restore();
 }
 
+function checkEndPoint(ctx) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = 'yellow';
+    ctx.arc(innerWidth, innerHeight, 5, 0, Math.PI * 2, true);
+    ctx.fill();
+    ctx.restore();
+}
+
 function editXCoordinate(x) {
     if (x < 0) {
         x = 0;
     }
-    if (x > window.innerWidth) {
-        x = window.innerWidth;
+    if (x > innerWidth) {
+        x = innerWidth;
     }
     return (x);
 }
@@ -104,8 +123,8 @@ function editYCoordinate(y) {
     if (y < 0) {
         y = 0;
     }
-    if (y > window.innerHeight) {
-        y = window.innerHeight;
+    if (y > innerHeight) {
+        y = innerHeight;
     }
     return (y);
 }
@@ -120,10 +139,10 @@ function changeToColorCode(color) {
 
 
 function drawLineWithArrows(ctx, x0, y0, x1, y1, aWidth, aLength, color) {
-    var dx = x1 - x0;
-    var dy = y1 - y0;
-    var angle = Math.atan2(dy, dx);
-    var length = Math.sqrt(dx * dx + dy * dy);
+    const dx = x1 - x0;
+    const dy = y1 - y0;
+    const angle = Math.atan2(dy, dx);
+    const length = Math.sqrt(dx * dx + dy * dy);
 
     ctx.lineWidth = 3;
     ctx.strokeStyle = color;

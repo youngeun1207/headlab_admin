@@ -49,7 +49,7 @@ body{
 
 button{
     float: left;
-    all: unset;
+    border: none;
     cursor: pointer;
     background-color: rgba(255, 219, 85, 1);
     padding: 7px 2px;
@@ -63,11 +63,10 @@ button{
     margin-right: 5px;
 }
 
-.select_min {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.min_btn{
+    background-color: #123373;
+    color: #ffffff;
+    width: 50px;
 }
 
 .share-data{
@@ -169,4 +168,17 @@ section > div:nth-child(9) {
     bottom: 0;
     left: auto;
     right: 0;
+}
+
+audio {
+    float: left;
+    all: unset;
+    cursor: pointer;
+    height: 30px;
+    width: 150px;
+    color: #ffffff;
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: rgba(255, 219, 85, 1);
 }

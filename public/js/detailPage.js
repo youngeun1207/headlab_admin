@@ -1,17 +1,20 @@
 import "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
 import 'https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js';
+import "https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js";
 
 import { readDatabase, readStorage } from "./firebase.js";
 import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
-import { createSequence, deleteSequence, showSequence } from "./sequence.js";
+import { createSequence, deleteSequence, sequence, showSequence } from "./sequence.js";
 import { createShareData, showShare, deleteShare } from "./getShare.js";
 import { createProcess, deleteProcess, showProcess } from "./process.js";
 import { className, division } from "./Page/Gallaries.js";
+import { editMinButtons } from "./minBtn.js";
+import { getAudioFile } from "./playAudio.js";
 
-var isSequence = false;
-var isHeatmap  = false;
-var isShare  = false;
-var isProc  = false;
+let isHeatmap  = false;
+let isShare  = false;
+export let isSequence = false;
+export let isProc  = false;
 
 $(document).ready(function () {
     const bg = document.getElementById("screenshot");
@@ -26,16 +29,26 @@ $(document).ready(function () {
     }
     const student_info = document.getElementById("student-info");
     student_info.innerText = `${division[gaze_data.id.division]} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
-    createSequence(bg, gaze_data);
+    
+    editMinButtons(gaze_data);
+
+    sequence(bg);
     createHeatmap(bg, gaze_data);
     createShareData(gaze_data);
     createProcess(gaze_data);
+    if(gaze_data.audio){
+        getAudioFile(gaze_data.audio);
+    } else {
+        const audio = document.getElementById("audio");
+        audio.remove();
+    }
 
     const seq = document.getElementById("seq");
     const heat = document.getElementById("heat");
     const share = document.getElementById("share");
     const proc = document.getElementById("proc");
     const close = document.getElementById("close");
+    
 
     if (seq) {
         seq.addEventListener("click", handleSequence);
