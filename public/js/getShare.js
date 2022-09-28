@@ -29,7 +29,8 @@ export async function createShareData(data){
 
     div.innerText = `캔버스: ${canvas.toPrecision(2)}%\n
                      컨트롤: ${controler.toPrecision(2)}%\n
-                     참고이미지: ${reference.toPrecision(2)}%`;
+                     참고이미지: ${reference.toPrecision(2)}%\n
+                     시선정확도: ${data.accuracy}%`;
 
 
     const container = document.getElementById("container")
