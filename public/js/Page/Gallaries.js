@@ -28,6 +28,13 @@ export const division = {
     genius: '영재',
     test: '테스트'
 }
+export const disability_type = {
+    autism: '(자폐)',
+    intellectual: '(지적)',
+    complex: '(복합)',
+    etc: '(기타)',
+    NA: ''
+}
 
 export default async function getGallaries(key_data){
     const full_data = Object.entries(key_data);

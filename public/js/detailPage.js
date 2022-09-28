@@ -7,7 +7,7 @@ import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
 import { createSequence, deleteSequence, sequence, showSequence } from "./sequence.js";
 import { createShareData, showShare, deleteShare } from "./getShare.js";
 import { createProcess, deleteProcess, showProcess } from "./process.js";
-import { className, division } from "./Page/Gallaries.js";
+import { className, disability_type, division } from "./Page/Gallaries.js";
 import { editMinButtons } from "./minBtn.js";
 import { getAudioFile } from "./playAudio.js";
 
@@ -28,7 +28,8 @@ $(document).ready(function () {
 
     }
     const student_info = document.getElementById("student-info");
-    student_info.innerText = `${division[gaze_data.id.division]} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
+    const student_type = division[gaze_data.id.division] + disability_type[gaze_data.personal_info.disability_type];
+    student_info.innerText = `${student_type} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
     
     editMinButtons(gaze_data);
 
