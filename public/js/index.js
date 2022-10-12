@@ -4,6 +4,19 @@ import "https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js";
 
 import { getAuth, readDatabase } from "./firebase.js";
 import getGallaries, { sortFunction } from './Page/Gallaries.js';
+import { handleDeleteClick, handleSelectClick } from "./select.js";
+
+
+export const selectBtn = document.getElementById("select");
+export const deleteBtn = document.getElementById("delete");
+
+if(selectBtn){
+    selectBtn.addEventListener('click', handleSelectClick);
+}
+
+if(deleteBtn){
+    deleteBtn.addEventListener('click', handleDeleteClick);
+}
 
 await getAuth();
 const data = await readDatabase("key_info");

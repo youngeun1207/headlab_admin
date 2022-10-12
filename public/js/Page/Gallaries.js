@@ -17,9 +17,13 @@ export const className = {
     green: '초록',
     blue: '파랑',
     sky: '하늘',
-    purple: '보라',
     pink: '분홍',
+    purple: '보라',
     white: '하양',
+    fineArt: '전공실기: 회화',
+    media: '전공실기: 미디어',
+    design: '전공실기: 일러스트 및 디자인',
+    composite: '전공실기: 복합매체',
     test: '테스터'
 }
 
@@ -52,15 +56,17 @@ export default async function getGallaries(key_data){
             template(key, division[id.division], className[id.class], id.id, isRef));
         }
     );
-    gallaryDocument.addEventListener('click',async function(e){
-        if(e.target && e.target.id != 'gallary'){
-            const link = "./detail.html";
-            // var data = drawing_data[e.target.id];
-            const data = await readPersonalData(e.target.id);
-            const src = await readStorage(data.screenshot);
-            await openNewPage(link, data, src);
-         }
-    });
+    gallaryDocument.addEventListener('click',openPersonalPage);
+}
+
+export async function openPersonalPage(e){
+    if(e.target && e.target.id != 'gallary'){
+        const link = "./detail.html";
+        // var data = drawing_data[e.target.id];
+        const data = await readPersonalData(e.target.id);
+        const src = await readStorage(data.screenshot);
+        await openNewPage(link, data, src);
+     }
 }
 
 export function sortFunction(a, b) {
@@ -72,7 +78,7 @@ export function sortFunction(a, b) {
 }
 
 const template = (drawing, division, classes, id, isRef) => `
-    <div class='drawing' id=${drawing}">
+    <div class='drawing' id=${drawing}>
         <div id=${drawing}>
             <div class = 'text' id=${drawing}>${division}</div>
             <div class = 'text' id=${drawing}>${classes}</div>

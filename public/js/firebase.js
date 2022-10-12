@@ -20,10 +20,10 @@ const storageRef = storage.ref();
 
 const auth = firebase.auth(app);
 
-export async function getAuth(){
+export async function getAuth() {
     auth.signInAnonymously().catch((error) => {
         console.log(error.code);
-        console.log();(error.message);
+        console.log(); (error.message);
     });
 }
 
@@ -39,6 +39,40 @@ export async function readPersonalData(key) {
     return data.val();
 }
 
+export async function readStoragePath(key) {
+    let pathList = [];
+
+    const screenPath = (await dbRef.child("data").child(key).child("screenshot").get()).val();
+    if(screenPath);
+    pathList.push(screenPath);
+
+    const drawPath = (await dbRef.child("data").child(key).child("drawing").get()).val();
+    
+    const timestamp = (await dbRef.child("data").child(key).child("process_index").get()).val();
+    if(timestamp){
+        const timestampArr = Object.values(timestamp);
+        let prefix = 1;
+        for (let i = 0; i < timestampArr.length; i++) {
+            pathList.push(`${drawPath}_${prefix}`);
+            prefix += 2;
+        }
+    }
+    pathList.push(`${drawPath}_end`);
+
+    const audioPath = (await dbRef.child("data").child(key).child("audio").get()).val();
+    if (audioPath) {
+        pathList.push(audioPath);
+    }
+
+    return pathList;
+}
+
+export async function deleteFromStorage(key) {
+    const pathList = await readStoragePath(key);
+    console.log(pathList);
+    Array.from(pathList).forEach(path => (storageRef.child(path)).delete());
+}
+
 export async function readStorage(path) {
     return await storageRef.child(path).getDownloadURL();
 }
@@ -46,4 +80,7 @@ export async function readStorage(path) {
 export async function deleteData(path) {
     const data = await dbRef.child("data").child(path);
     data.remove();
+
+    const keyInfo = await dbRef.child("key_info").child(path);
+    keyInfo.remove();
 }
