@@ -1,10 +1,15 @@
 const SAMPLING = 32;
 const GRADIENT = 4;
 
-async function createCanvas(div){
+export async function createSequenceCanvas(div){
+    const canvas = await createCanvas(div, 'sequence');
+    canvas.style.visibility = 'hidden';
+}
+
+export async function createCanvas(div, id){
     const canvas = document.createElement('canvas');
-    canvas.id = 'sequence';
-    canvas.className = 'sequence';
+    canvas.id = id;
+    canvas.className = id;
 
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, div.style.width, div.style.height);
@@ -20,12 +25,8 @@ async function createCanvas(div){
 
     const container = document.getElementById("container")
     container.appendChild(canvas);
-}
 
-export async function sequence(div){
-    await createCanvas(div);
-    const canvas = document.getElementById('sequence');
-    canvas.style.visibility = 'hidden';
+    return canvas;
 }
 
 export function createSequence(gazeData) {
@@ -33,8 +34,7 @@ export function createSequence(gazeData) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     ctx.fillRect(0, 0, innerWidth, innerHeight);
-
-    checkStartPoint(gazeData, ctx);
+    checkGazePoint(gazeData[0], ctx);
 
     // 초기컬러: cyan
     let color = {
@@ -91,20 +91,11 @@ export function showSequence() {
 }
 
 
-function checkStartPoint(gazeData, ctx) {
+export function checkGazePoint(coordinateData, ctx) {
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = 'red';
-    ctx.arc(gazeData[0].x, gazeData[0].y, 5, 0, Math.PI * 2, true);
-    ctx.fill();
-    ctx.restore();
-}
-
-function checkEndPoint(ctx) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.fillStyle = 'yellow';
-    ctx.arc(innerWidth, innerHeight, 5, 0, Math.PI * 2, true);
+    ctx.arc(coordinateData.x, coordinateData.y, 5, 0, Math.PI * 2, true);
     ctx.fill();
     ctx.restore();
 }
