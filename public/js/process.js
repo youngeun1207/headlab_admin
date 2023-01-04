@@ -1,7 +1,8 @@
-import { readStorage } from "./firebase.js";
+import { listStorage, readStorage } from "./firebase.js";
 import { getGazeShare } from "./getShare.js";
 import { min1, min3, min5, min7 } from "./minBtn.js";
 import { min } from "./Page/Gallaries.js";
+import { generateZIP } from "./saveImages.js";
 
 const WHITE = "255, 255, 255, 0.5"
 const RED = "255, 0, 0, 0.5"
@@ -23,6 +24,8 @@ export async function createProcess(gaze_data) {
     }
     const width = canvasOffset.r - canvasOffset.l;
     const height = canvasOffset.b - canvasOffset.t;
+    await generateZIP(gaze_data.drawing.slice(8) ,await listStorage(gaze_data.drawing + `/`));
+    
     if(min1){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(0, min1), width, height);
         src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.min1 + '.png');

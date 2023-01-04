@@ -43,13 +43,13 @@ export async function readStoragePath(key) {
     let pathList = [];
 
     const screenPath = (await dbRef.child("data").child(key).child("screenshot").get()).val();
-    if(screenPath);
+    if (screenPath);
     pathList.push(screenPath);
 
     const drawPath = (await dbRef.child("data").child(key).child("drawing").get()).val();
-    
+
     const timestamp = (await dbRef.child("data").child(key).child("process_index").get()).val();
-    if(timestamp){
+    if (timestamp) {
         const timestampArr = Object.values(timestamp);
         let prefix = 1;
         for (let i = 0; i < timestampArr.length; i++) {
@@ -72,9 +72,30 @@ export async function deleteFromStorage(key) {
     console.log(pathList);
     Array.from(pathList).forEach(path => (storageRef.child(path)).delete());
 }
-
+export async function deleteStorage(path) {
+    (storageRef.child(path)).delete();
+}
 export async function readStorage(path) {
-    return await storageRef.child(path).getDownloadURL();
+    let url;
+    try {
+        url = await storageRef.child(path).getDownloadURL();
+    } catch (e) {
+    }
+    return url;
+}
+
+export async function listStorage(path) {
+    let url = await storageRef.child(path);
+    let urlList = [];
+    url.listAll()
+        .then((res) => {
+            res.items.forEach(async (itemRef) => {
+                urlList.push(await itemRef.getDownloadURL());
+            });
+        }).catch((error) => {
+            // Uh-oh, an error occurred!
+        });
+    return urlList;
 }
 
 export async function deleteData(path) {
@@ -83,4 +104,14 @@ export async function deleteData(path) {
 
     const keyInfo = await dbRef.child("key_info").child(path);
     keyInfo.remove();
+}
+
+export async function saveImage(path, src) {
+    const file_path = storageRef.child(path);
+    file_path.put(src)
+}
+
+export async function uploadFile(file, filename) {
+    const path = storageRef.child(filename);
+    path.put(file)
 }
