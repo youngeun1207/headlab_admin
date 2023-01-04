@@ -25,30 +25,30 @@ export async function createProcess(gaze_data) {
     const height = canvasOffset.b - canvasOffset.t;
     if(min1){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(0, min1), width, height);
-        src = await readStorage(gaze_data.drawing + min.min1);
+        src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.min1 + '.png');
         colors = await getMaxVal(rank);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc1" , width, height, colors));
     }
     if(min3){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min1, min3), width, height);
-        src = await readStorage(gaze_data.drawing + min.min3);
+        src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.min3 + '.png');
         colors = await getMaxVal(rank);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc3", width, height, colors));
     }
     if(min5){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min3, min5), width, height);
-        src = await readStorage(gaze_data.drawing + min.min5);
+        src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.min5 + '.png');
         colors = await getMaxVal(rank);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc5", width, height, colors));
     }
     if(min7){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(min5, min7), width, height);
-        src = await readStorage(gaze_data.drawing + min.min7);
+        src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.min7 + '.png');
         colors = await getMaxVal(rank);
         container.insertAdjacentHTML("beforeend", template(src, rank, "proc7", width, height, colors));
     }
     rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(Math.max(0, min1, min3, min5, min7)), width, height);
-    src = await readStorage(gaze_data.drawing + min.end);
+    src = await readStorage(gaze_data.drawing + `/${gaze_data.drawing.slice(8)}` + min.end + '.png');
     colors = await getMaxVal(rank);
     container.insertAdjacentHTML("beforeend", template(src, rank, "proc_end", width, height, colors)); 
 
