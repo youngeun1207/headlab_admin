@@ -2,10 +2,27 @@ import { listStorage, readStorage } from "./firebase.js";
 import { getGazeShare } from "./getShare.js";
 import { min1, min3, min5, min7 } from "./minBtn.js";
 import { min } from "./Page/Gallaries.js";
-import { generateZIP } from "./saveImages.js";
 
 const WHITE = "255, 255, 255, 0.5"
 const RED = "255, 0, 0, 0.5"
+
+async function generateZIP(filename, urls){
+    if(!urls) return;
+
+    const zip = new JSZip();
+    const folder = zip.folder(filename);
+    for(let i = 0; i < urls.length; i++){
+        const url = urls[i];
+        const blobPromise = fetch(url).then((r) => {
+            if (r.status === 200) return r.blob();
+            return Promise.reject(new Error(r.statusText));
+        });
+        const name = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
+        folder.file(`${filename}${name.substring(name.indexOf("_"))}`, blobPromise);
+    };
+
+    zip.generateAsync({ type: "blob" }).then((blob) => saveAs(blob, filename));
+}
 
 export async function createProcess(gaze_data) {
     const container = document.getElementById("proc-container");
@@ -24,7 +41,6 @@ export async function createProcess(gaze_data) {
     }
     const width = canvasOffset.r - canvasOffset.l;
     const height = canvasOffset.b - canvasOffset.t;
-    await generateZIP(gaze_data.drawing.slice(8) ,await listStorage(gaze_data.drawing + `/`));
     
     if(min1){
         rank = await getGridShare(canvasOffset, gaze_data.gaze_data.slice(0, min1), width, height);
@@ -61,6 +77,15 @@ export async function createProcess(gaze_data) {
 
     container.style.visibility = "hidden";
     container.style.zIndex = 1;
+
+    const urls = await listStorage(gaze_data.drawing + `/`)
+
+    const download = document.getElementById("download");
+    if (download) {
+        download.addEventListener("click", async function(){
+            await generateZIP(gaze_data.drawing.slice(8) ,urls);
+        });
+    }
 }
 
 async function getMaxVal(rank){

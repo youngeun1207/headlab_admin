@@ -86,15 +86,11 @@ export async function readStorage(path) {
 
 export async function listStorage(path) {
     let url = await storageRef.child(path);
-    let urlList = [];
-    url.listAll()
-        .then((res) => {
-            res.items.forEach(async (itemRef) => {
-                urlList.push(await itemRef.getDownloadURL());
-            });
-        }).catch((error) => {
-            // Uh-oh, an error occurred!
-        });
+    const urlList = [];
+    const res = await url.listAll();
+    res.items.forEach(async (itemRef) => {
+        urlList.push(await itemRef.getDownloadURL());
+    });
     return urlList;
 }
 
