@@ -59,3 +59,8 @@ button{
     font-size: 12px;
     margin-right: 5px;
 }
+
+#prev_data{
+    width: 200px;
+    float: right;
+}

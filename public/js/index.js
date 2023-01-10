@@ -5,10 +5,13 @@ import "https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js";
 import { getAuth, readDatabase } from "./firebase.js";
 import getGallaries, { sortFunction } from './Page/Gallaries.js';
 import { handleDeleteClick, handleSelectClick } from "./select.js";
+import { handlePrevClick } from "./openPrevData.js";
 
 
 export const selectBtn = document.getElementById("select");
 export const deleteBtn = document.getElementById("delete");
+
+export const prevBtn = document.getElementById("prev_data");
 
 if(selectBtn){
     selectBtn.addEventListener('click', handleSelectClick);
@@ -16,6 +19,10 @@ if(selectBtn){
 
 if(deleteBtn){
     deleteBtn.addEventListener('click', handleDeleteClick);
+}
+
+if(prevBtn){
+    prevBtn.addEventListener('click', handlePrevClick);
 }
 
 await getAuth();

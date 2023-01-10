@@ -1,4 +1,4 @@
-async function createWindow(link){
+export async function createWindow(link){
     window.open(link);
 }
 
