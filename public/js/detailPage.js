@@ -34,8 +34,11 @@ $(document).ready(function () {
     }
     
     const student = document.getElementById("student-info");
-    const student_type = division[gaze_data.id.division] + disability_type[gaze_data.personal_info.disability_type];
-    const student_info = `${student_type} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
+    const student_type = division[gaze_data.id.division];
+    const student_info = `${student_type} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
+
+    // const student_type = division[gaze_data.id.division] + disability_type[gaze_data.personal_info.disability_type];
+    // const student_info = `${student_type} ${className[gaze_data.id.class]} ${gaze_data.id.id} (${gaze_data.personal_info.gender}/${gaze_data.personal_info.age})`;
     student.innerText = student_info;
 
     document.title = student_info;

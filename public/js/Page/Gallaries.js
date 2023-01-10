@@ -24,14 +24,16 @@ export const className = {
     media: '전공실기: 미디어',
     design: '전공실기: 일러스트 및 디자인',
     composite: '전공실기: 복합매체',
-    test: '테스터'
+    test: '테스터',
 }
 
 export const division = {
     disability: '장애',
     genius: '영재',
-    test: '테스트'
+    test: '테스트',
+    JAN: '1월 테스터'
 }
+
 export const disability_type = {
     autism: '(자폐)',
     intellectual: '(지적)',
@@ -53,7 +55,8 @@ export default async function getGallaries(key_data){
         // const src = await readStorage(value .drawing + min.end);
         const id = value .id;
         gallaryDocument.insertAdjacentHTML("beforeend", 
-            template(key, division[id.division], className[id.class], id.id, isRef));
+            template(key, division[id.division], id.id, isRef));
+            // template(key, division[id.division], className[id.class], id.id, isRef));
         }
     );
     gallaryDocument.addEventListener('click',openPersonalPage);
@@ -77,25 +80,22 @@ export function sortFunction(a, b) {
     else return 1;
 }
 
-const template = (drawing, division, classes, id, isRef) => `
+const template = (drawing, division, id, isRef) => `
     <div class='drawing' id=${drawing}>
         <div id=${drawing}>
             <div class = 'text' id=${drawing}>${division}</div>
-            <div class = 'text' id=${drawing}>${classes}</div>
             <div class = 'text' id=${drawing}>${id}</div>
         </div>
         <div class = 'text' id=${drawing}>참고이미지: ${isRef}</div>
     </div>
 `; 
-
-
-// const template = (src, drawing, division, classes, id) => `
-//     <div class='drawing' id=${drawing}">
-//         <image class ='thumbnail' src=${src} id=${drawing} />
+// const template = (drawing, division, classes, id, isRef) => `
+//     <div class='drawing' id=${drawing}>
 //         <div id=${drawing}>
 //             <div class = 'text' id=${drawing}>${division}</div>
 //             <div class = 'text' id=${drawing}>${classes}</div>
 //             <div class = 'text' id=${drawing}>${id}</div>
 //         </div>
+//         <div class = 'text' id=${drawing}>참고이미지: ${isRef}</div>
 //     </div>
 // `; 
