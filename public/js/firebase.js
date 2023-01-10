@@ -53,11 +53,11 @@ export async function readStoragePath(key) {
         const timestampArr = Object.values(timestamp);
         let prefix = 1;
         for (let i = 0; i < timestampArr.length; i++) {
-            pathList.push(`${drawPath}_${prefix}`);
+            pathList.push(`${drawPath}/${drawPath.slice(8)}_${prefix}.png`);
             prefix += 2;
         }
     }
-    pathList.push(`${drawPath}_end`);
+    pathList.push(`${drawPath}/${drawPath.slice(8)}_end.png`);
 
     const audioPath = (await dbRef.child("data").child(key).child("audio").get()).val();
     if (audioPath) {
@@ -69,12 +69,13 @@ export async function readStoragePath(key) {
 
 export async function deleteFromStorage(key) {
     const pathList = await readStoragePath(key);
-    console.log(pathList);
     Array.from(pathList).forEach(path => (storageRef.child(path)).delete());
 }
+
 export async function deleteStorage(path) {
     (storageRef.child(path)).delete();
 }
+
 export async function readStorage(path) {
     let url;
     try {

@@ -19,7 +19,7 @@ async function selectData(e) {
             return;
         }
         target.style.backgroundColor = "white";
-        selected.push(e.target.id);
+        selected.push(divId);
     }
 }
 export async function handleDeleteClick() {
