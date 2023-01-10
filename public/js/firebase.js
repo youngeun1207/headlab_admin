@@ -99,7 +99,10 @@ export async function deleteData(path) {
     const data = await dbRef.child("data").child(path);
     data.remove();
 
-    const keyInfo = await dbRef.child("key_info").child(path);
+    // const keyInfo = await dbRef.child("key_info").child(path);
+
+    // 1월 테스트용
+    const keyInfo = await dbRef.child("key_info_2023JAN").child(path);
     keyInfo.remove();
 }
 

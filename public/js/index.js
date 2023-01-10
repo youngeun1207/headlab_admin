@@ -19,7 +19,9 @@ if(deleteBtn){
 }
 
 await getAuth();
-const data = await readDatabase("key_info");
+// const data = await readDatabase("key_info");
+// 1월 테스트
+const data = await readDatabase("key_info_2023JAN");
 
 // const key_list = Object.keys(data);
 // key_list.map(key => readStorage(data[key].drawing + "_end"));
