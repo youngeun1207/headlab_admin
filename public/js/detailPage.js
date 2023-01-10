@@ -2,7 +2,7 @@ import "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
 import 'https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js';
 import "https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js";
 import "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.js";
-import "http://cdn.jsdelivr.net/g/filesaver.js";
+import "https://cdn.jsdelivr.net/g/filesaver.js";
 
 import { readDatabase, readStorage } from "./firebase.js";
 import createHeatmap, { deleteHeatmap, showHeatmap } from "./heatmap.js"
